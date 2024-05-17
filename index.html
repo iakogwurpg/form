@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cascading Dropdown Example</title>
+    <script>
+        async function updateStates() {
+            var country = document.getElementById("country").value;
+            var stateSelect = document.getElementById("state");
+            stateSelect.innerHTML = ''; // Clear previous options
+
+            if (country) {
+                const response = await fetch(`/states/${country}`);
+                const states = await response.json();
+                
+                states.forEach(function(state) {
+                    var option = document.createElement("option");
+                    option.value = state.toLowerCase();
+                    option.textContent = state;
+                    stateSelect.appendChild(option);
+                });
+            } else {
+                stateSelect.innerHTML = '<option>Please select country first</option>';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Cascading Dropdown Form</h2>
+    <form>
+        <label for="country">Country:</label>
+        <select id="country" onchange="updateStates()">
+            <option value="">Select a country</option>
+            <option value="USA">United States</option>
+            <option value="Canada">Canada</option>
+        </select>
+
+        <label for="state">State/Province:</label>
+        <select id="state">
+            <option value="">Please select country first</option>
+        </select>
+    </form>
+</body>
+</html>
